@@ -11,9 +11,54 @@
 #include <strings.h>
 #include <arpa/inet.h>
 
+
 #define OUT_FILE "ns.txt"
 
+
+//globals
+int cache[20][2]; // format cache[x][0] = tranID
+                  //        cache[x][1] = process_message result
+int cache_ptr = 0;
+
+
+// process requests to register/unregister a service
+int process_message(char* buf){
+    char* buffer;
+    buffer = strndup(buf,255);
+    
+    // check if message is a duplicate 
+    // check if server is already registered/unregistered
+    // return 0 on success 
+    // return prev result on dup
+    // return -1 on invalid
+
+    
+    
+    //get the tid (transaction id)
+    char * tid_str = strtok(buffer,"-");
+    
+    if (tid_str == NULL){
+        printf("invalid tid\n");
+        free(buffer);
+        return -1;
+    }
+    int tid = atoi(tid_str);
+    if(tid <= 0){
+        printf("%s is not a valid TID\n", tid_str);
+        free(buffer);
+        return -1;
+    }
+    printf("TID: %d\n", tid);
+    free(buffer);
+    return 0;
+
+}
+
+
 int main(){
+
+    bzero(cache,sizeof(int)*40); //clear cache
+
 
     //create the socket file descripter 
     int sock_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -114,15 +159,24 @@ int main(){
         }
 
 
-        // TODO: process message
+        // proccess
+        res = process_message(buffer);
 
-
-        // send back either success or error message
-
-        res = write(client_sock_fd, "success", 8);
-        if(res < 0){
-            printf("could not send message to client\n");
+        // return results
+        if (res < 0){
+            res = write(client_sock_fd, "failed ", 8);
+            if(res < 0){
+                printf("could not send message to client\n");
+            }
         }
+        else{
+            res = write(client_sock_fd, "success", 8);
+            if(res < 0){
+                printf("could not send message to client\n");
+            }
+        }
+        
+        
         close(client_sock_fd);
     }
     return 0;
