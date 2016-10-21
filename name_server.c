@@ -13,26 +13,30 @@
 
 
 #define OUT_FILE "ns.txt"
+#define CACHE_SIZE 20
 
 
 //globals
-int cache[20][2]; // format cache[x][0] = tranID
+int cache[CACHE_SIZE][2]; // format cache[x][0] = tranID
                   //        cache[x][1] = process_message result
 int cache_ptr = 0;
 
 
 // process requests to register/unregister a service
+//
+// messages are passed as strings, so that this program
+// doesn't need changed every time the set of functions changes
 int process_message(char* buf){
     char* buffer;
     buffer = strndup(buf,255);
     
+    // TODO
     // check if message is a duplicate 
     // check if server is already registered/unregistered
     // return 0 on success 
     // return prev result on dup
     // return -1 on invalid
 
-    
     
     //get the tid (transaction id)
     char * tid_str = strtok(buffer,"-");
@@ -42,6 +46,7 @@ int process_message(char* buf){
         free(buffer);
         return -1;
     }
+    
     int tid = atoi(tid_str);
     if(tid <= 0){
         printf("%s is not a valid TID\n", tid_str);
@@ -49,6 +54,56 @@ int process_message(char* buf){
         return -1;
     }
     printf("TID: %d\n", tid);
+    
+
+    // check cache
+    int i;
+    for(i=0; i<CACHE_SIZE; i++){
+        if(cache[i][0] == tid){ //tid exists in cache
+            printf("tid in cache, prev result: %d\n", cache[i][1]);
+            free(buffer);
+            return cache[i][1];
+        }
+    }
+    printf("not found in cache\n");
+    
+
+    //find out the client's location
+    char * client_ip = strtok(NULL, ":");
+    if(client_ip == NULL){
+        printf("invalid client IP\n");
+        // TODO update cache
+        free(buffer);
+        return -1;
+    }
+    printf("recieved %s as client IP\n", client_ip);
+    
+    struct in_addr client_addr;
+    if(!inet_aton(client_ip, &client_addr)){ // returns non-zero if client_ip is invalid
+        printf("client ip: %s was found to be invalid by inet_aton\n",client_ip);
+        free(buffer);
+        // TODO update cache
+        return -1;
+    }
+    printf("client addr stored as %u\n", client_addr.s_addr);
+
+    char * client_port_str = strtok(NULL, "-");
+    if(client_port_str == NULL){
+        printf("invalid port\n");
+        // TODO update cache
+        free(buffer);
+        return -1;
+    }
+    printf("got %s as client port number\n", client_port_str);
+    unsigned short client_port = atoi(client_port_str);
+    if(client_port == 0){
+        printf("%s could not be converted into an unsigned short\n", client_port_str);
+        free(buffer);
+        //TODO update cache
+        return -1;
+    }
+    printf("client port stored as %u\n", client_port);
+
     free(buffer);
     return 0;
 
