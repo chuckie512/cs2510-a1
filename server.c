@@ -73,8 +73,10 @@ int main(){
     }
     printf("listening\n");
 
+
     // process ip and port of server
     init_server(inet_ntoa(test.sin_addr), ntohs(test.sin_port));
+
 
     // start accepting clients
     pthread_t threads[THREAD_COUNT];

@@ -1,8 +1,9 @@
 // author: Charles Smith <cas275@pitt.edu>
 // a very simple matrix library
 #include <limits.h>
+#include <stdint.h>
 // a * b = c
-void multiply(int n, int m, int l, int a[n][m], int b[m][l], int c[n][l]){
+void multiply(int32_t n, int32_t m, int32_t l, int32_t a[n][m], int32_t b[m][l], int32_t c[n][l]){
     
     int i = 0;
     int j = 0;
@@ -29,7 +30,7 @@ void multiply(int n, int m, int l, int a[n][m], int b[m][l], int c[n][l]){
 
 
 //sorts a from smallest to largest
-void sort(int n, int a[n]){
+void sort(int32_t n, int32_t a[n]){
     int i;
     int j;
     int swap;
@@ -52,7 +53,7 @@ void sort(int n, int a[n]){
     }
 }
 
-int min(int n, int a[n]){
+int32_t min(int32_t n, int32_t a[n]){
     int i;
     int min = INT_MAX;
 
@@ -65,9 +66,9 @@ int min(int n, int a[n]){
     return min;
 }
 
-int max(int n, int a[n]){
+int32_t max(int32_t n, int32_t a[n]){
     int i;
-    int max = INT_MIN;
+    int32_t max = INT_MIN;
 
     for(i=0; i<n; i++){
         if(a[i]>max){
