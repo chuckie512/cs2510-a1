@@ -9,6 +9,8 @@
 #include <stdint.h>
 #include "matrix.h"
 
+
+
 void *process_connection(void *args){
     int client_fd = *((int *) args);
     
@@ -19,6 +21,8 @@ void *process_connection(void *args){
     tid = ntohl(tid);
     printf("tid: %d\n", tid);
 
+    int q;
+    int in_cache = 0;
     int32_t n, m, l;
     res = read(client_fd, &n, sizeof(int32_t));
     n = ntohl(n);
@@ -55,7 +59,6 @@ void *process_connection(void *args){
 
     // actually do the math
     multiply(n,m,l,a,b,c);
-    
     printf("mult\n");
     int32_t temp;
     for(i=0; i<n; i++){

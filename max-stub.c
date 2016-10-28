@@ -9,6 +9,11 @@
 #include <stdint.h>
 #include "matrix.h"
 
+#define CACHE_SIZE 5
+
+static uint32_t cache[CACHE_SIZE][2];
+static uint32_t cache_pt = 0;
+
 void *process_connection(void *args){
     int client_fd = *((int *) args);
 
@@ -18,13 +23,27 @@ void *process_connection(void *args){
     tid = ntohl(tid);
     printf("tid: %d\n", tid);
 
+    int i;
+    for(i=0; i<CACHE_SIZE; i++){
+        if(cache[i][0] == tid){
+            printf("found in cache\n");
+            int32_t cached_res = cache[i][1];
+            cached_res = htonl(cached_res);
+            write(client_fd, &cached_res, sizeof(int32_t));
+            close(client_fd);
+            free(args);
+            pthread_exit(NULL);
+            return;
+        }
+    }
+
     int32_t n;
     read(client_fd, &n, sizeof(int32_t));
     n = ntohl(n);
 
     int32_t a[n];
 
-    int i;
+
     for(i=0; i<n; i++){
         read(client_fd, &a[i], sizeof(int32_t));
         a[i] = ntohl(a[i]);

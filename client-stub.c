@@ -177,7 +177,7 @@ int32_t min(int32_t n, int32_t a[n]){
     time_t ti;
     srand((unsigned)time(&ti));
     tid = rand();
-
+    
     tid = htonl(tid);
     write(sockfd, &(tid), sizeof(int32_t));
   
