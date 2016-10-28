@@ -28,11 +28,12 @@ int get_serv(int func, char ** IP, int * PORT){
             if(atoi(function) == func){
                 *IP = strtok(NULL,":");
                 *PORT = atoi(strtok(NULL, ""));
+                fclose(fp);
                 return 0;
             }
         }
     }
-
+    fclose(fp);
     return -1;
 
 }
@@ -60,7 +61,11 @@ void multiply(int32_t n, int32_t m, int32_t l, int32_t a[n][m], int32_t b[m][l],
 
     connect(sockfd, (struct sockaddr *) &serv, sizeof(struct sockaddr_in));
 
-    uint32_t tid = 3;
+    uint32_t tid;
+    time_t ti;
+    srand((unsigned)time(&ti));
+    tid = rand();
+
     tid = htonl(tid);
     write(sockfd, &(tid), sizeof(uint32_t));
    
@@ -122,7 +127,11 @@ void sort(int32_t n, int32_t a[n]){
 
     connect(sockfd, (struct sockaddr *) &serv, sizeof(struct sockaddr_in));
 
-    int32_t tid = 3;
+    uint32_t tid;
+    time_t ti;
+    srand((unsigned)time(&ti));
+    tid = rand();
+    
     tid = htonl(tid);
     write(sockfd, &(tid), sizeof(int32_t));
     
@@ -164,7 +173,11 @@ int32_t min(int32_t n, int32_t a[n]){
 
     connect(sockfd, (struct sockaddr *) &serv, sizeof(struct sockaddr_in));
           
-    int32_t tid = 3;
+    uint32_t tid;
+    time_t ti;
+    srand((unsigned)time(&ti));
+    tid = rand();
+
     tid = htonl(tid);
     write(sockfd, &(tid), sizeof(int32_t));
   
@@ -204,7 +217,11 @@ int32_t max(int32_t n, int32_t a[n]){
 
     connect(sockfd, (struct sockaddr *) &serv, sizeof(struct sockaddr_in));
 
-    int32_t tid = 3;
+    uint32_t tid;
+    time_t ti;
+    srand((unsigned)time(&ti));
+    tid = rand();
+
     tid = htonl(tid);
     write(sockfd, &(tid), sizeof(int32_t));
 

@@ -6,10 +6,11 @@
 
 #ifndef MATRIX_H
 #define MATRIX_H
+#include <stdint.h>
 
-void multiply(int n, int m, int l, int a[n][m], int b[m][l], int c[n][l]);
-void sort(int n, int a[n]);
-int min(int n, int a[n]);
-int max(int n, int a[n]);
+void multiply(int32_t n, int32_t m, int32_t l, int32_t a[n][m], int32_t b[m][l], int32_t c[n][l]);
+void sort(int32_t n, int32_t a[n]);
+int32_t min(int32_t n, int32_t a[n]);
+int32_t max(int32_t n, int32_t a[n]);
 
 #endif
