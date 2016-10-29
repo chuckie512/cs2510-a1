@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include "matrix.h"
+#include "register.c"
 
 void *process_connection(void *args){
     int client_fd = *((int *) args);
@@ -47,8 +48,10 @@ void *process_connection(void *args){
 
 void init_server(char * ip, int port){
     printf("%s:%d\n", ip, port);
-    FILE * fp = fopen("./ns.txt","a");
-    fprintf(fp, "2 %s:%d\n", ip, port);
-    fclose(fp);
+    //    FILE * fp = fopen("./ns.txt","a");
+    //    fprintf(fp, "2 %s:%d\n", ip, port);
+    //    fclose(fp);
+
+    register_fun(2, ip, port);
 }
 

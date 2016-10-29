@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include "matrix.h"
+#include "register.c"
+
 
 #define CACHE_SIZE 5
 
@@ -63,8 +65,11 @@ void *process_connection(void *args){
 
 void init_server(char * ip, int port){
     printf("%s:%d\n", ip, port);
-    FILE * fp = fopen("./ns.txt", "a");
-    fprintf(fp, "4 %s:%d\n", ip, port);
-    fclose(fp);
+    //    FILE * fp = fopen("./ns.txt", "a");
+    //    fprintf(fp, "4 %s:%d\n", ip, port);
+    //    fclose(fp);
+    
+    register_fun(4, ip, port);
+
 }
 
