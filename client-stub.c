@@ -94,7 +94,10 @@ int get_serv(int func, char ** IP, int * PORT){
     bzero(res, 256);
     read(sockfd, &res, 255);
     res[255] = '\0';
-
+    
+    if(res[0] == '\0'){
+        return -1;
+    }
     *IP = strtok(res, ":");
     *PORT = atoi(strtok(NULL, ""));
     return 0;

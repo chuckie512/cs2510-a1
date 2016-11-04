@@ -78,8 +78,10 @@ void *process_connection(void *args){
 
 void init_server(char * ip, int port){
     printf("%s:%d\n",ip,port);
-
+    int i;
+    int j;
     FILE * fp = fopen("./ns.txt", "w");
     fprintf(fp, "%s:%d\n", ip, port);
     fclose(fp);
+
 }

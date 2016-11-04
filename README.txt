@@ -92,8 +92,6 @@ KNOWN ISSUES:
  
  * The server currently only reports 0.0.0.0 as the IP address, so all programs must execute on the same machine 
 
- * When the name server has no server availible for a request, the client will crash
-
  * The name server does not perform a status check on the servers to see if they are still reachable, and may report
    old information to the clients
 
