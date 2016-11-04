@@ -97,4 +97,4 @@ KNOWN ISSUES:
  * The name server does not perform a status check on the servers to see if they are still reachable, and may report
    old information to the clients
 
-
+ * Extra prints to stdout have been left in server.c and the server stubs for demonstration purposes 
